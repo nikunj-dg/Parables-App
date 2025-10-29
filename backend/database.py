@@ -11,7 +11,7 @@ import os
 
 # Initial setup -------------------------------------------
 
-load_dotenv("config.env")
+load_dotenv()
 
 password = quote_plus(os.getenv("DB_PASS"))
 

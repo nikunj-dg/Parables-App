@@ -15,7 +15,7 @@ import schemas, crud, database
 
 # Support Functions ---------------------------------------
 
-load_dotenv("config.env")
+load_dotenv()
 
 def create_token(username: str):
     exp = datetime.datetime.utcnow() + datetime.timedelta(hours=1)

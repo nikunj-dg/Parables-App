@@ -31,3 +31,19 @@ fetch("http://127.0.0.1:8000/parables", {
   .then((data) => setParables(data))
   .catch((err) => console.error(err));
 
+
+
+Git commands:
+git status
+View the modified, added and deleted files 
+
+git add . or git add filenames
+Stage all the modified files, which files to be included in next commit 
+
+git commit -m "Message"
+Committing with a message about the commit
+
+git push 
+Send the commits to repo 
+
+

@@ -6,7 +6,7 @@ from urllib.parse import quote_plus
 import psycopg2
 import os 
 
-load_dotenv("config.env")
+load_dotenv()
 
 password = quote_plus(os.getenv("DB_PASS"))
 
