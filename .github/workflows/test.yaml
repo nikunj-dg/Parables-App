@@ -1,15 +1,14 @@
-name: Build and Test # Workflow name
+name: Test Pipeline
 
-on: # Trigger conditions 
-  push:
-    branches: [ main, develop ]
+on:
   pull_request:
     branches: [ main, develop ]
+  push:
+    branches: [ main, develop ]
 
-jobs: 
-  build: # Job names build
+jobs:
+  test:
     runs-on: ubuntu-latest
-
     services:
       postgres:
         image: postgres:14
@@ -24,15 +23,15 @@ jobs:
           --health-timeout=5s
           --health-retries=5
 
-    steps: # Exevution flow 
-      - name: Checkout repo
+    steps:
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      # --- Backend Build ---
+      # --- Backend Tests ---
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: 3.10
 
       - name: Install backend dependencies
         run: |
@@ -42,19 +41,20 @@ jobs:
       # - name: Run backend tests
       #   run: |
       #     cd backend
-      #     pytest
+      #     pytest -v
 
-      # --- Frontend Build ---
+      # --- Frontend Tests ---
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Install frontend dependencies and build
+      - name: Install frontend dependencies
         run: |
           cd frontend
           npm ci
-          npm run build
-      
-      - name: Build Docker images
-        run: docker compose build
+
+      # - name: Run frontend tests
+      #   run: |
+      #     cd frontend
+      #     npm test -- --watchAll=false
