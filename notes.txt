@@ -1,16 +1,7 @@
 Make the following changes
-- How to call a block of code before every function in crud
-- Handle and display errors 
-- Back should go back to the previous page ( Edit -> Display )
-- DeepL or Google Translate API to make parables multilingual 
-- LLMs for sentiment analyzers or text summarizers
-- LLMs for GenAI use. 
-- Download the parables 
-- Generate artworks based on the parables
-- User comments and real time discussion sessions 
+- How to call a block of code before every function in crud 
 - Sharing APIs
 - Develop user dashboard to track visits, views, clicks 
-- Push the complete repo on GitHub 
 - Integrate CI/CD functionality 
 - Learn testing and monitoring tools 
 

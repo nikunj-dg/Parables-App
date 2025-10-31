@@ -1,0 +1,60 @@
+name: Build and Test # Workflow name
+
+on: # Trigger conditions 
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs: 
+  build: # Job names build
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_DB: parables
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps: # Exevution flow 
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # --- Backend Build ---
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.10
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Run backend tests
+        run: |
+          cd backend
+          pytest
+
+      # --- Frontend Build ---
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install frontend dependencies and build
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+      
+      - name: Build Docker images
+        run: docker compose build

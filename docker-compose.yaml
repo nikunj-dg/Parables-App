@@ -1,0 +1,35 @@
+version: '3.8' # Compose fle format version 
+
+services: # Containers that make up an appilcation
+  backend:
+    build: ./backend
+    container_name: parables-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on: # Ensures database container starts before the backend
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: parables-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:14 # Use official image from Docker Hub 
+    container_name: parables-db
+    environment:
+      POSTGRES_DB: parables
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes: # Persist database data when container stops or rebuilds 
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:
