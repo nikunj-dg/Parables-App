@@ -2,7 +2,9 @@ version: '3.8' # Compose fle format version
 
 services: # Containers that make up an appilcation
   backend:
-    build: ./backend
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile.dockerfile
     container_name: parables-backend
     ports:
       - "8000:8000"
@@ -12,7 +14,9 @@ services: # Containers that make up an appilcation
       - db
 
   frontend:
-    build: ./frontend
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.dockerfile
     container_name: parables-frontend
     ports:
       - "3000:80"
