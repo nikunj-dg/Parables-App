@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from dotenv import load_dotenv
 from urllib.parse import quote_plus
+from pathlib import Path
 
 import os 
 
@@ -11,7 +12,8 @@ import os
 
 # Initial setup -------------------------------------------
 
-load_dotenv()
+env_path = Path(__file__).resolve().parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
 password = quote_plus(os.getenv("DB_PASS"))
 

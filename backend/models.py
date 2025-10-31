@@ -1,7 +1,8 @@
 # Import required libraries -------------------------------
 
 from sqlalchemy import Column, Integer, String, Text, DateTime, func, ARRAY
-from database import Base
+
+from .database import Base
 
 
 

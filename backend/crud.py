@@ -2,7 +2,7 @@
 
 import hashlib
 
-import models, schemas, database
+from . import models, schemas, database
 
 
 

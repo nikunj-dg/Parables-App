@@ -1,6 +1,6 @@
 # Import required libraries -------------------------------
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import List, Optional
 from datetime import datetime
 
@@ -27,9 +27,8 @@ class Parable(ParableBase):
     id: int
     created_at: datetime
 
-    class Config:
-        # Allows FastAPI/Pydantic to take SQLAlchemy ORM objects and automatically serialize them into JSON responses
-        from_attributes = True
+    # Allows FastAPI/Pydantic to take SQLAlchemy ORM objects and automatically serialize them into JSON responses
+    model_config = ConfigDict(from_attributes=True)
 
 class ParableCreate(ParableBase):
     "Addidtional fields that are only for create"
@@ -52,8 +51,7 @@ class User(UserBase):
     id: int
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class UserLogin(BaseModel):
     username: str
