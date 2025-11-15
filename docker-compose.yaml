@@ -1,4 +1,4 @@
-version: '3.8' # Compose fle format version 
+version: '3.8' # Compose file format version 
 
 services: # Containers that make up an appilcation
   backend:
@@ -8,8 +8,8 @@ services: # Containers that make up an appilcation
     container_name: parables-backend
     ports:
       - "8000:8000"
-    env_file:
-      - .env
+    env_file: # Uses local .env when run locally 
+      - .env 
     depends_on: # Ensures database container starts before the backend
       - db
 
@@ -27,9 +27,9 @@ services: # Containers that make up an appilcation
     image: postgres:14 # Use official image from Docker Hub 
     container_name: parables-db
     environment:
-      POSTGRES_DB: parables
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${DB_NAME:-parables}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASS:-postgres}
     volumes: # Persist database data when container stops or rebuilds 
       - pgdata:/var/lib/postgresql/data
     ports:
