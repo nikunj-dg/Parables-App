@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DB_NAME: ${{ secrets.DB_NAME }}
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASS: ${{ secrets.DB_PASS }}
+      DB_NAME: ${{ secrets.DB_NAME || 'parables' }}
+      DB_USER: ${{ secrets.DB_USER || 'postgres' }}
+      DB_PASS: ${{ secrets.DB_PASS || 'postgres' }}
       DB_HOST: ${{ secrets.DB_HOST }}
       DB_PORT: ${{ secrets.DB_PORT }}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
@@ -23,9 +23,9 @@ jobs:
       postgres:
         image: postgres:14
         env:
-          POSTGRES_DB: ${DB_NAME:-parables}
-          POSTGRES_USER: ${DB_USER:-postgres}
-          POSTGRES_PASSWORD: ${DB_PASS:-postgres}
+          POSTGRES_DB: ${{ env.DB_NAME }}
+          POSTGRES_USER: ${{ env.DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASS }}
         ports: ["5432:5432"]
         options: >-
           --health-cmd="pg_isready -U postgres"
