@@ -31,7 +31,7 @@ jobs:
       # Build frontend Docker image
       - name: Build and push frontend image
         run: |
-          docker build -f ./backend/Dockerfile.dockerfile -t ${{ secrets.DOCKER_USERNAME }}/parables-frontend:${GITHUB_REF##*/} ./frontend
+          docker build -f ./frontend/Dockerfile.dockerfile -t ${{ secrets.DOCKER_USERNAME }}/parables-frontend:${GITHUB_REF##*/} ./frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/parables-frontend:${GITHUB_REF##*/} 
 
       - name: Create GitHub Release
