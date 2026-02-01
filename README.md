@@ -8,7 +8,8 @@ An app to view and share Parables
 - Delete parables 
 - Account required to maked changes to parables 
 - Create new accounts 
-- Search for parables 
+- Search for parables
+- Workflow setup
 
 ## Snippet
 
