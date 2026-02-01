@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useError } from "../context/ErrorContext";
+import { useAuth } from "../context/AuthContext.tsx";
 
 import ParableForm from "../components/ParableForm";
 
@@ -14,13 +16,11 @@ interface Parable {
 
 const AddParable = () => {
     const navigate = useNavigate();
-    const [userToken, setUserToken] = useState("")
+    const { showError } = useError();
+    const { isLoggedIn, userToken } = useAuth();
 
     useEffect(() => {
-        const user_token = sessionStorage.getItem("user_token");
-
-        if (!user_token) navigate('/login');
-        else setUserToken(user_token);
+        if (!isLoggedIn) navigate('/login');
     }, []);
     
     const handleAddParable = async (parable: Parable) => {
@@ -47,7 +47,15 @@ const AddParable = () => {
 
             navigate(`/`);
         })
-        .catch((err) => console.error("Error adding parable:", err));
+        .catch((err) => {
+            console.error("Error adding parable:", err);
+
+            if (err instanceof Error) {
+                showError(err.message);
+            } else {
+                showError("Something went wrong");
+            }
+        });
     }
 
     const emptyParable = {

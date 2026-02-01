@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.tsx";
+import { useError } from "../context/ErrorContext";
 
 import ParableCard from "../components/ParableCard";
 import Search from "./Search";
@@ -15,15 +17,13 @@ interface Parable {
 }
 
 const Home = () => {
+  const { isLoggedIn } = useAuth();
   const [parables, setParables] = useState<Parable[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const { showError } = useError();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user_token = sessionStorage.getItem("user_token");
-    setIsLoggedIn(!!user_token);
-
     fetch("http://127.0.0.1:8000/parables", {
       headers: {
         "Content-Type": "application/json",
@@ -31,7 +31,15 @@ const Home = () => {
     })
     .then((res) => res.json())
     .then((data) => setParables(data))
-    .catch((err) => console.error("Error fetching parables:", err));
+    .catch((err) => {
+      console.error("Error fetching parables:", err);
+
+      if (err instanceof Error) {
+          showError(err.message);
+      } else {
+          showError("Something went wrong");
+      }
+    });
   }, []);
 
   const handleNewParableClick = (e: React.MouseEvent) => {

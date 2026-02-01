@@ -1,6 +1,8 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useError } from "../context/ErrorContext";
+import { useAuth } from "../context/AuthContext.tsx";
 
 import ParableForm from "../components/ParableForm";
 
@@ -17,13 +19,11 @@ const EditParable = () => {
     const location = useLocation();
     // ? helps safely access nested properties that may be undefined or null 
     const parable = location.state?.parable;
-    const [userToken, setUserToken] = useState("")
+    const { showError } = useError();
+    const { isLoggedIn, userToken } = useAuth();
 
     useEffect(() => {
-        const user_token = sessionStorage.getItem("user_token");
-
-        if (!user_token) navigate('/login');
-        else setUserToken(user_token);
+        if (!isLoggedIn) navigate('/login');
     }, []);
 
     const handleEditParable = async (parable: Parable) => {
@@ -52,12 +52,20 @@ const EditParable = () => {
                 { state: {parable} }
             );
         })
-        .catch((err) => console.error("Error updating parable:", err));
+        .catch((err) => {
+            console.error("Error updating parable:", err);
+
+            if (err instanceof Error) {
+                showError(err.message);
+            } else {
+                showError("Something went wrong");
+            }
+        });
     }
 
     return (
         <div className="flex-1 flex flex-col items-center p-8 bg-gradient-to-b from-gray-100 to-white">
-            <Link to="/" className="self-start mb-6">
+            <Link to={`/parable/${parable.id}`} state={{ parable }} className="self-start mb-6">
                 <span className="text-xl ">
                     <IoMdArrowRoundBack />
                 </span>

@@ -7,6 +7,7 @@ interface SearchProps {
 
 const Search = ({ onSearchChange }: SearchProps) => {
   const [searchVal, setSearchVal] = useState("");
+  
   return (
     <div className="flex flex-col items-center justify-center">
         <h1 className="text-3xl m-3">Parables</h1>

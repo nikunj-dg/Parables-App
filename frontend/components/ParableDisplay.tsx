@@ -1,7 +1,7 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { useState, useEffect } from "react";
-// import { useParams } from "react-router-dom";
+import { useError } from "../context/ErrorContext";
+import { useAuth } from "../context/AuthContext.tsx";
 
 interface Parable {
     id: number;
@@ -15,14 +15,9 @@ const ParableDisplay = () => {
     const location = useLocation();
     // ? helps safely access nested properties that may be undefined or null 
     const parable = location.state?.parable;
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const user_token = sessionStorage.getItem("user_token");
-        
-        setIsLoggedIn(!!user_token);
-    }, []);
+    const { showError } = useError();
+    const { isLoggedIn } = useAuth();
 
     const handleEditClick = (e: React.MouseEvent, parable: Parable) => {
         e.stopPropagation;
@@ -58,7 +53,15 @@ const ParableDisplay = () => {
 
             navigate("/");
         })
-        .catch((err) => console.error("Error deleting parable:", err));
+        .catch((err) => {
+            console.error("Error deleting parable:", err);
+
+            if (err instanceof Error) {
+                showError(err.message);
+            } else {
+                showError("Something went wrong");
+            }
+        });
     }
 
     // Return error component 

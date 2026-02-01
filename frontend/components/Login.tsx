@@ -1,18 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.tsx";
+import { useError } from "../context/ErrorContext";
 
-interface LoginProps {
-    setLoggedIn: (value: boolean) => void;
-}
-
-const Login = ({ setLoggedIn }: LoginProps) => {
+const Login = () => {
     const navigate = useNavigate();
+    const { isLoggedIn, login: loginUser } = useAuth();
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [name, setName] = useState("")
     const [surname, setSurname] = useState("")
     const [login, setLogin] = useState(true) // If false, show signup 
+    const { showError } = useError();
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate(`/`);
+        }
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -41,12 +47,19 @@ const Login = ({ setLoggedIn }: LoginProps) => {
             .then((data) => {
                 console.log("User authenticated successfully:", data);
 
-                sessionStorage.setItem("user_token", data.user_token);
-                setLoggedIn(true);
+                loginUser(data.user_token);
 
                 navigate(`/`);
             })
-            .catch((err) => console.error("Error authenticating user:", err));
+            .catch((err) => {
+                console.error("Error authenticating user:", err);
+
+                if (err instanceof Error) {
+                    showError(err.message);
+                } else {
+                    showError("Something went wrong");
+                }
+            });
         }
         else {
             console.log("Create User");
@@ -74,9 +87,23 @@ const Login = ({ setLoggedIn }: LoginProps) => {
             .then((data) => {
                 console.log("User created successfully:", data);
 
+                setUsername("");
+                setName("");
+                setPassword("");
+                setSurname("");
+                setLogin(true);
+
                 navigate(`/login`);
             })
-            .catch((err) => console.error("Error creating user:", err));
+            .catch((err) => {
+                console.error("Error creating user:", err);
+
+                if (err instanceof Error) {
+                    showError(err.message);
+                } else {
+                    showError("Something went wrong");
+                }
+            });
         }
     }
 

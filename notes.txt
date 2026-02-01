@@ -1,10 +1,9 @@
 Make the following changes
-- How to call a block of code before every function in crud 
-- Sharing APIs
-- Develop user dashboard to track visits, views, clicks 
-- Integrate CI/CD functionality 
-- Learn testing and monitoring tools 
+- Apply scroll-smooth functionality
+- Add education, certifications and extraas(volunteer, competitions) sections
 
+Account Logins 
+admin - admin123@
 
 
 Handle expired tokens
@@ -36,5 +35,23 @@ Committing with a message about the commit
 
 git push 
 Send the commits to repo 
+
+git fetch <branch>
+See what new changes are on github, but don't apply yet
+
+git merge <branch>
+Take the downloaded ( changes ) and apply them to codebase
+
+git pull
+It runs git fetch and then git merge
+
+Delete the old tag locally and on the remote:
+git tag -d v1.0.0
+git push origin :refs/tags/v1.0.0
+
+
+Create a new tag pointing to the commit where release.yml is updated:
+git tag v1.0.1
+git push origin v1.0.1
 
 
