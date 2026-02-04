@@ -39,9 +39,9 @@ Language: Python 3.10+
 - Install all he requirements
     - pip install -r requirements.txt
 - To start backend server, run the command from root folder
-    "uvicorn backend.main:app --reload --no-use-colors"
+    - uvicorn backend.main:app --reload --no-use-colors
 - To start frontend server, run the command from frontend folder 
-    "npm run dev"
+    - npm run dev
 
 ## Future Improvements 
 - JWT Authentication
